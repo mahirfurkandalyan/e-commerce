@@ -1,36 +1,38 @@
 # Demo Deploy
 
-Bu proje iki parçadan oluşuyor:
+Bu proje iki parcadan olusuyor:
 
-- `backend`: Django REST API
-- `frontend`: Next.js site
+- `backend`: Django REST API, Railway uzerinde calisir.
+- `frontend`: Next.js site, Vercel uzerinde calisir.
 
-Demo link için önerilen kurulum:
+Production demo hedefleri:
 
-1. Backend ve Postgres'i Render veya Railway gibi bir servise deploy et.
-2. Frontend'i Vercel'e deploy et.
-3. Vercel'de `NEXT_PUBLIC_API_BASE_URL` değerini backend URL'inin `/api` endpoint'i olarak gir.
+- Backend URL: `https://e-commerce-production-cb7b.up.railway.app`
+- API Base URL: `https://e-commerce-production-cb7b.up.railway.app/api`
+- Iyzico callback backend uzerinde kalir.
+- Kullanici odeme sonucunda frontend `/payment-result` sayfasina doner.
 
-## Backend Env
+## Railway Backend Env
 
-Backend servisinde gerekli env değerleri:
+Railway backend servisinde gerekli env degerleri:
 
 ```env
 DJANGO_SECRET_KEY=uzun-rastgele-bir-secret
 DJANGO_DEBUG=False
-DJANGO_ALLOWED_HOSTS=backend-domain.example.com
-CORS_ALLOWED_ORIGINS=https://frontend-domain.example.com
-CSRF_TRUSTED_ORIGINS=https://frontend-domain.example.com
+DJANGO_ALLOWED_HOSTS=e-commerce-production-cb7b.up.railway.app
+CORS_ALLOWED_ORIGINS=https://your-vercel-domain.vercel.app
+FRONTEND_BASE_URL=https://your-vercel-domain.vercel.app
 DATABASE_URL=postgresql://...
-FRONTEND_BASE_URL=https://frontend-domain.example.com
 IYZICO_API_KEY=sandbox-api-key
 IYZICO_SECRET_KEY=sandbox-secret-key
 IYZICO_BASE_URL=sandbox-api.iyzipay.com
+DJANGO_TIME_ZONE=Europe/Istanbul
+API_PAGE_SIZE=12
 ```
 
-Render/Railway Postgres kullanıyorsan çoğu zaman `DATABASE_URL` otomatik verilir.
+`CSRF_TRUSTED_ORIGINS` ayri env olarak okunmuyor; backend kodu `CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS` kullaniyor.
 
-## Backend Commands
+## Railway Backend Commands
 
 Build command:
 
@@ -44,24 +46,40 @@ Start command:
 gunicorn config.wsgi:application
 ```
 
-## Frontend Env
+Health check:
 
-Vercel'de `frontend` klasörünü root seç ve şu env değerini gir:
+```txt
+https://e-commerce-production-cb7b.up.railway.app/api/health/
+```
+
+## Vercel Frontend
+
+Vercel'de `frontend` klasorunu project root sec.
+
+Build command:
+
+```bash
+npm run build
+```
+
+Vercel environment variables:
 
 ```env
-NEXT_PUBLIC_API_BASE_URL=https://backend-domain.example.com/api
+NEXT_PUBLIC_API_BASE_URL=https://e-commerce-production-cb7b.up.railway.app/api
 NEXT_PUBLIC_WHATSAPP_NUMBER=
 ```
 
 ## Iyzico Test
 
-Kartla odeme secilirse backend iyzico Checkout Form oturumu acar ve frontend kullaniciyi iyzico sandbox odeme sayfasina gonderir. Iyzico callback URL'i otomatik backend uzerinden uretilir:
+Kartla odeme secilirse backend iyzico Checkout Form oturumu acar ve frontend kullaniciyi iyzico sandbox odeme sayfasina gonderir.
+
+Callback URL backend uzerinden otomatik uretilir:
 
 ```txt
-https://backend-domain.example.com/api/payments/iyzico/callback/
+https://e-commerce-production-cb7b.up.railway.app/api/payments/iyzico/callback/
 ```
 
-Sandbox test karti olarak iyzico'nun test panelinde verilen kartlari kullan. Yaygin basarili test karti:
+Sandbox test karti:
 
 ```txt
 Kart: 5528790000000008
@@ -72,11 +90,11 @@ CVC: 123
 
 ## Demo Users
 
-Seed command sonrası demo hesapları:
+Seed command sonrasi demo hesaplari:
 
 - Admin: `yonetici / 123456`
 - Customer: `musteri / 123456`
 
 ## Not
 
-Yeni ürün fotoğrafı upload edilirse dosya backend instance diskinde kalır. Kalıcı demo için Cloudinary/S3 gibi external media storage eklemek gerekir. Sipariş, kayıt ve ürün verileri Postgres'te kalıcıdır.
+Yeni urun fotografi upload edilirse dosya backend instance diskinde kalir. Kalici demo icin Cloudinary/S3 gibi external media storage eklemek gerekir. Siparis, kayit ve urun verileri Postgres'te kalicidir.

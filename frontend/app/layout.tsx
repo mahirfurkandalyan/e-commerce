@@ -20,7 +20,6 @@ const dmSerif = DM_Serif_Display({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("http://localhost:3000"),
   title: "Micro Commerce",
   description: "Next.js ve Django ile hazırlanmış sade ve premium alışveriş deneyimi.",
   applicationName: "Micro Commerce",
