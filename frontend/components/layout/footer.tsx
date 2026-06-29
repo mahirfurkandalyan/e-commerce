@@ -118,7 +118,7 @@ export function Footer({ storeName, brandColor, logo, description }: FooterProps
             />
             <button
               type="submit"
-              className="shrink-0 rounded-xl border border-[#dcc4aa]/25 bg-[linear-gradient(135deg,rgba(220,196,170,0.25),rgba(220,196,170,0.12))] px-5 py-3 text-sm font-medium text-[#dcc4aa] transition hover:-translate-y-0.5 hover:border-[#dcc4aa]/40 hover:bg-[linear-gradient(135deg,rgba(220,196,170,0.35),rgba(220,196,170,0.2))]"
+              className="rounded-xl border border-[#dcc4aa]/25 bg-[linear-gradient(135deg,rgba(220,196,170,0.25),rgba(220,196,170,0.12))] px-5 py-3 text-sm font-medium text-[#dcc4aa] transition hover:-translate-y-0.5 hover:border-[#dcc4aa]/40 hover:bg-[linear-gradient(135deg,rgba(220,196,170,0.35),rgba(220,196,170,0.2))]"
             >
               Abone Ol
             </button>

@@ -530,6 +530,31 @@ button, a, input, textarea {
     overflow-x: hidden;
   }
 
+  body,
+  main,
+  section,
+  article,
+  header,
+  footer,
+  div,
+  form,
+  nav {
+    max-width: 100%;
+  }
+
+  *,
+  *::before,
+  *::after {
+    min-width: 0;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
+  }
+
   .editorial-title {
     letter-spacing: -0.015em;
     overflow-wrap: anywhere;

@@ -72,17 +72,17 @@ export async function SiteShell({
                 </div>
               )}
               <div className="min-w-0 flex-1">
-                <p className="truncate text-[11px] font-semibold uppercase tracking-[0.18em] sm:tracking-[0.3em]" style={{ color: brandColor }}>
+                <p className="break-words text-[11px] font-semibold uppercase leading-snug tracking-[0.14em] sm:tracking-[0.3em]" style={{ color: brandColor }}>
                   {storeName}
                 </p>
-                <p className="truncate text-xs text-[#888888] sm:text-sm">{storeDescription}</p>
+                <p className="hidden text-sm text-[#888888] sm:block">{storeDescription}</p>
               </div>
             </Link>
 
-            <nav className="flex w-full items-center gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:w-auto sm:gap-3 sm:overflow-visible">
+            <nav className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:flex-nowrap sm:gap-3">
               <Link
                 href="/"
-                className="shrink-0 rounded-full border border-black/8 bg-white/80 px-3.5 py-2 text-sm text-[#111111] shadow-[0_2px_8px_-4px_rgba(17,17,17,0.1)] transition hover:-translate-y-0.5 hover:border-[#dcc4aa]/60 hover:bg-white hover:shadow-[0_6px_18px_-6px_rgba(17,17,17,0.14)] sm:px-4"
+                className="rounded-full border border-black/8 bg-white/80 px-3.5 py-2 text-sm text-[#111111] shadow-[0_2px_8px_-4px_rgba(17,17,17,0.1)] transition hover:-translate-y-0.5 hover:border-[#dcc4aa]/60 hover:bg-white hover:shadow-[0_6px_18px_-6px_rgba(17,17,17,0.14)] sm:px-4"
               >
                 Mağaza
               </Link>
@@ -130,7 +130,7 @@ export async function SiteShell({
                 {eyebrow}
               </span>
 
-              <h1 className={`animate-reveal-up delay-100 editorial-title gradient-text ${isFeatureHero ? "max-w-5xl text-[2.35rem] leading-[0.98] sm:text-6xl lg:text-[5rem]" : "text-3xl leading-[0.98] sm:text-5xl"}`}>
+              <h1 className={`animate-reveal-up delay-100 editorial-title gradient-text ${isFeatureHero ? "max-w-5xl text-[2rem] leading-[1.02] min-[390px]:text-[2.2rem] sm:text-6xl sm:leading-[0.98] lg:text-[5rem]" : "text-3xl leading-[0.98] sm:text-5xl"}`}>
                 {title}
               </h1>
 
@@ -152,7 +152,16 @@ export async function SiteShell({
 
               {/* Trust section: scrolling marquee for feature hero, pills for compact */}
               {isFeatureHero ? (
-                <div className="animate-reveal-fade delay-500 overflow-hidden pt-1 sm:pt-2">
+                <>
+                <div className="animate-reveal-fade delay-500 flex flex-wrap gap-2 pt-1 sm:hidden">
+                  {marqueeItems.slice(0, 4).map((item) => (
+                    <span key={item.label} className="inline-flex min-h-8 items-center gap-1.5 rounded-full border border-black/6 bg-white/70 px-3 text-[11px] text-[#777777]">
+                      <span style={{ color: `${brandColor}90` }}>{item.icon}</span>
+                      {item.label}
+                    </span>
+                  ))}
+                </div>
+                <div className="animate-reveal-fade delay-500 hidden overflow-hidden pt-2 sm:block">
                   <div className="pointer-events-none relative">
                     <div className="absolute left-0 top-0 z-10 h-full w-10 bg-gradient-to-r from-[#fdfaf6] to-transparent" />
                     <div className="absolute right-0 top-0 z-10 h-full w-10 bg-gradient-to-l from-[#f7ede2] to-transparent" />
@@ -167,8 +176,9 @@ export async function SiteShell({
                     </div>
                   </div>
                 </div>
+                </>
               ) : (
-                <div className="animate-reveal-fade delay-500 flex items-center gap-5 pt-1">
+                <div className="animate-reveal-fade delay-500 flex flex-wrap items-center gap-3 pt-1 sm:gap-5">
                   {trustPills.map((pill) => (
                     <div key={pill.label} className="flex items-center gap-1.5 text-[12px] text-[#888888]">
                       <span className="text-xs">{pill.icon}</span>

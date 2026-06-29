@@ -49,7 +49,7 @@ export function SearchForm({ defaultValue, activeCategory, activeSort }: SearchF
                   className="w-full rounded-xl border border-black/8 bg-white py-3.5 pl-10 pr-4 text-sm text-[#111111] shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_2px_8px_-4px_rgba(17,17,17,0.06)] outline-none placeholder:text-[#c0c0c0] focus:border-[#dcc4aa] focus:shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_0_3px_rgba(220,196,170,0.2)]"
                 />
               </div>
-              <button type="submit" className="btn-primary w-full shrink-0 !py-3 min-[420px]:w-auto">
+              <button type="submit" className="btn-primary w-full !py-3 min-[420px]:w-auto">
                 Ara
               </button>
             </form>
@@ -57,8 +57,8 @@ export function SearchForm({ defaultValue, activeCategory, activeSort }: SearchF
         </div>
 
         <div className="flex flex-col gap-2 border-t border-black/5 pt-4 min-[420px]:flex-row min-[420px]:items-center">
-          <span className="shrink-0 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#aaaaaa]">Sırala</span>
-          <div className="grid grid-cols-2 gap-2 min-[520px]:flex min-[520px]:overflow-x-auto min-[520px]:[scrollbar-width:none] min-[520px]:[&::-webkit-scrollbar]:hidden">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#aaaaaa]">Sırala</span>
+          <div className="grid w-full grid-cols-2 gap-2 min-[520px]:flex min-[520px]:flex-wrap">
             {SORT_OPTIONS.map((option) => {
               const isActive = (option.value === "" && !activeSort) || option.value === activeSort;
               const params = new URLSearchParams();
@@ -80,9 +80,9 @@ export function SearchForm({ defaultValue, activeCategory, activeSort }: SearchF
                   key={option.value || "popular"}
                   href={href}
                   className={cn(
-                    "inline-flex min-h-9 items-center justify-center whitespace-nowrap rounded-full px-3 py-1.5 text-[12px] font-medium transition",
+                    "inline-flex min-h-9 min-w-0 items-center justify-center rounded-full px-3 py-1.5 text-center text-[12px] font-medium leading-tight transition",
                     isActive
-                      ? "min-w-[72px] bg-[linear-gradient(135deg,#1a1410,#2e1f14)] shadow-[0_4px_14px_-4px_rgba(17,17,17,0.4)]"
+                      ? "bg-[linear-gradient(135deg,#1a1410,#2e1f14)] shadow-[0_4px_14px_-4px_rgba(17,17,17,0.4)]"
                       : "border border-black/8 bg-white/70 text-[#555555] hover:-translate-y-0.5 hover:border-[#dcc4aa]/50 hover:bg-white hover:text-[#111111]",
                   )}
                 >

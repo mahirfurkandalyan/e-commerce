@@ -14,9 +14,9 @@ export function CartIndicator() {
     <>
       <Link
         href="/cart"
-        className="flex shrink-0 items-center justify-between gap-2 rounded-full bg-[#111111] px-3.5 py-2 text-sm font-medium text-white transition hover:opacity-90 sm:min-w-[112px] sm:px-4"
+        className="flex min-w-0 items-center justify-between gap-2 rounded-full bg-[#111111] px-3.5 py-2 text-sm font-medium text-white transition hover:opacity-90 sm:min-w-[112px] sm:px-4"
       >
-        <span className="shrink-0 text-sm font-semibold tracking-[0.01em] text-[#fffdf9]">Sepet</span>
+        <span className="text-sm font-semibold tracking-[0.01em] text-[#fffdf9]">Sepet</span>
         <span className="flex h-6 min-w-6 items-center justify-center rounded-full border border-white/10 bg-white/18 px-2 text-xs font-semibold leading-none text-[#fffdf9]">
           {itemCount}
         </span>

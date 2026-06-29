@@ -20,7 +20,7 @@ export function CategoryFilter({ categories, activeCategory, activeSearch, activ
   ];
 
   return (
-    <div className="flex gap-2.5 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <div className="grid grid-cols-2 gap-2 pb-1 min-[480px]:flex min-[480px]:flex-wrap">
       {filters.map((filter) => {
         const isActive = filter.slug === activeCategory || (!filter.slug && !activeCategory);
         const params = new URLSearchParams();
@@ -42,7 +42,7 @@ export function CategoryFilter({ categories, activeCategory, activeSearch, activ
             key={filter.slug || "all"}
             href={href}
             className={cn(
-              "inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-medium transition duration-200",
+              "inline-flex min-h-10 min-w-0 items-center justify-center rounded-full px-3 py-2 text-center text-xs font-medium leading-tight transition duration-200 sm:min-h-11 sm:px-4 sm:py-2.5 sm:text-sm",
               isActive
                 ? "bg-[linear-gradient(135deg,#1a1410,#2e1f14)] shadow-[0_6px_20px_-6px_rgba(17,17,17,0.45)]"
                 : "border border-black/8 bg-white/80 text-[#555555] shadow-[0_2px_8px_-4px_rgba(17,17,17,0.08)] hover:-translate-y-0.5 hover:border-[#dcc4aa]/60 hover:bg-[#fcf8f4] hover:text-[#111111] hover:shadow-[0_6px_18px_-6px_rgba(17,17,17,0.14)]",
