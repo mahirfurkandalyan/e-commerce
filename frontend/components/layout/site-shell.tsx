@@ -51,12 +51,12 @@ export async function SiteShell({
   const isFeatureHero = heroTone === "feature";
 
   return (
-    <main className="flex min-h-screen flex-1 px-2 py-2 pb-24 sm:px-6 sm:py-6 sm:pb-6 lg:px-8">
+    <main className="flex min-h-screen flex-1 px-0 py-0 sm:px-6 sm:py-6 lg:px-8">
       <div
-        className="app-frame mx-auto flex w-full max-w-[1440px] flex-col overflow-hidden rounded-[1.25rem] border border-black/5 p-3 sm:rounded-[2rem] sm:p-6 lg:p-8"
+        className="app-frame mx-auto flex w-full max-w-[1440px] flex-col overflow-hidden rounded-none border-0 p-3 sm:rounded-[2rem] sm:border sm:border-black/5 sm:p-6 lg:p-8"
         style={{ "--brand-color": brandColor } as CSSProperties}
       >
-        <header className="sticky top-2 z-30 mb-5 rounded-[1rem] border border-white/65 bg-white/92 px-3 py-3 shadow-[0_22px_60px_-40px_rgba(17,17,17,0.18),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-2xl sm:top-4 sm:mb-8 sm:rounded-[1.25rem] sm:px-5">
+        <header className="sticky top-0 z-30 mb-4 rounded-[1rem] border border-white/65 bg-white/95 px-3 py-3 shadow-[0_18px_45px_-34px_rgba(17,17,17,0.18),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-2xl sm:top-4 sm:mb-8 sm:rounded-[1.25rem] sm:px-5">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <Link href="/" className="flex min-w-0 items-center gap-3 sm:gap-4">
               {store?.logo ? (
@@ -65,7 +65,7 @@ export async function SiteShell({
                 </div>
               ) : (
                 <div
-                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-sm font-semibold text-white shadow-[0_12px_32px_-16px_rgba(17,17,17,0.45)]"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-semibold text-white shadow-[0_12px_32px_-16px_rgba(17,17,17,0.45)] sm:h-11 sm:w-11"
                   style={{ background: `linear-gradient(145deg, ${brandColor}ee, ${brandColor}bb)` }}
                 >
                   {storeName.charAt(0).toUpperCase()}
@@ -79,7 +79,7 @@ export async function SiteShell({
               </div>
             </Link>
 
-            <nav className="flex w-full items-center gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:w-auto sm:gap-3 sm:overflow-visible sm:pb-0">
+            <nav className="flex w-full items-center gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:w-auto sm:gap-3 sm:overflow-visible">
               <Link
                 href="/"
                 className="shrink-0 rounded-full border border-black/8 bg-white/80 px-3.5 py-2 text-sm text-[#111111] shadow-[0_2px_8px_-4px_rgba(17,17,17,0.1)] transition hover:-translate-y-0.5 hover:border-[#dcc4aa]/60 hover:bg-white hover:shadow-[0_6px_18px_-6px_rgba(17,17,17,0.14)] sm:px-4"
@@ -93,10 +93,10 @@ export async function SiteShell({
         </header>
 
         <section
-          className={`relative overflow-hidden rounded-[2rem] border border-black/6 ${
+          className={`relative rounded-[1.25rem] border border-black/6 sm:overflow-hidden sm:rounded-[2rem] ${
             isFeatureHero
-              ? "mb-7 bg-[linear-gradient(145deg,#ffffff_0%,#fdf9f5_42%,#f0e6da_100%)] p-4 sm:mb-10 sm:p-8 lg:p-12"
-              : "mb-6 bg-[linear-gradient(145deg,#ffffff_0%,#faf7f3_100%)] p-4 sm:mb-8 sm:p-8"
+              ? "mb-6 bg-[linear-gradient(145deg,#ffffff_0%,#fdf9f5_42%,#f0e6da_100%)] p-5 sm:mb-10 sm:p-8 lg:p-12"
+              : "mb-5 bg-[linear-gradient(145deg,#ffffff_0%,#faf7f3_100%)] p-5 sm:mb-8 sm:p-8"
           }`}
         >
           {/* Grid accent */}
@@ -121,38 +121,38 @@ export async function SiteShell({
 
           <div className={`relative grid gap-8 ${isFeatureHero ? "lg:grid-cols-[1.15fr_0.85fr] lg:items-center" : "lg:grid-cols-[1fr_0.5fr]"}`}>
             {/* ── Left: text content ── */}
-            <div className="max-w-4xl space-y-6">
+            <div className="max-w-4xl space-y-5 sm:space-y-6">
               <span
-                className="animate-reveal-up delay-0 inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.26em]"
+                className="animate-reveal-up delay-0 inline-flex max-w-full items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] sm:px-3.5 sm:text-[11px] sm:tracking-[0.26em]"
                 style={{ borderColor: `${brandColor}35`, backgroundColor: `${brandColor}15`, color: brandColor }}
               >
                 <span className="dot-ping inline-flex h-1.5 w-1.5 rounded-full" style={{ backgroundColor: brandColor, opacity: 0.7 }} />
                 {eyebrow}
               </span>
 
-              <h1 className={`animate-reveal-up delay-100 editorial-title gradient-text ${isFeatureHero ? "max-w-5xl text-4xl leading-[0.95] sm:text-6xl lg:text-[5rem]" : "text-3xl leading-[0.98] sm:text-5xl"}`}>
+              <h1 className={`animate-reveal-up delay-100 editorial-title gradient-text ${isFeatureHero ? "max-w-5xl text-[2.35rem] leading-[0.98] sm:text-6xl lg:text-[5rem]" : "text-3xl leading-[0.98] sm:text-5xl"}`}>
                 {title}
               </h1>
 
-              <p className={`animate-reveal-up delay-200 max-w-2xl text-[#5a5550] ${isFeatureHero ? "text-base leading-8 sm:text-lg" : "text-sm leading-7 sm:text-base"}`}>
+              <p className={`animate-reveal-up delay-200 max-w-2xl text-[#5a5550] ${isFeatureHero ? "text-sm leading-7 sm:text-lg sm:leading-8" : "text-sm leading-7 sm:text-base"}`}>
                 {description}
               </p>
 
-              <div className="animate-reveal-up delay-300 flex flex-col gap-3 sm:flex-row">
-                <Link href="/" className="btn-primary">
+              <div className="animate-reveal-up delay-300 flex flex-col gap-3 min-[460px]:flex-row">
+                <Link href="/" className="btn-primary w-full min-[460px]:w-auto">
                   Koleksiyonu İncele
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                     <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </Link>
-                <Link href="/checkout" className="btn-secondary">
+                <Link href="/checkout" className="btn-secondary w-full min-[460px]:w-auto">
                   Güvenli Ödeme
                 </Link>
               </div>
 
               {/* Trust section: scrolling marquee for feature hero, pills for compact */}
               {isFeatureHero ? (
-                <div className="animate-reveal-fade delay-500 overflow-hidden pt-2">
+                <div className="animate-reveal-fade delay-500 overflow-hidden pt-1 sm:pt-2">
                   <div className="pointer-events-none relative">
                     <div className="absolute left-0 top-0 z-10 h-full w-10 bg-gradient-to-r from-[#fdfaf6] to-transparent" />
                     <div className="absolute right-0 top-0 z-10 h-full w-10 bg-gradient-to-l from-[#f7ede2] to-transparent" />
