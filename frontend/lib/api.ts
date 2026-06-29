@@ -62,6 +62,53 @@ function buildUrl(path: string) {
   return `${getApiBaseUrl()}${path}`;
 }
 
+function extractErrorMessage(data: unknown) {
+  if (typeof data === "string") {
+    return data;
+  }
+
+  if (!data || typeof data !== "object") {
+    return null;
+  }
+
+  const record = data as Record<string, unknown>;
+  const payload = record.detail ?? data;
+
+  if (typeof payload === "string") {
+    return payload;
+  }
+
+  if (payload && typeof payload === "object") {
+    const firstEntry = Object.values(payload as Record<string, unknown>)[0];
+    if (Array.isArray(firstEntry)) {
+      return String(firstEntry[0]);
+    }
+    if (typeof firstEntry === "string") {
+      return firstEntry;
+    }
+    if (firstEntry && typeof firstEntry === "object") {
+      return JSON.stringify(firstEntry);
+    }
+  }
+
+  return JSON.stringify(data);
+}
+
+async function readErrorMessage(response: Response) {
+  const fallback = `Request failed with status ${response.status}.`;
+  const rawBody = await response.text();
+
+  if (!rawBody) {
+    return fallback;
+  }
+
+  try {
+    return extractErrorMessage(JSON.parse(rawBody)) ?? fallback;
+  } catch {
+    return rawBody || fallback;
+  }
+}
+
 function getImageUrl(image: string | null) {
   if (!image) {
     return null;
@@ -92,25 +139,7 @@ async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   });
 
   if (!response.ok) {
-    let message = "Request failed.";
-
-    try {
-      const data = (await response.json()) as {
-        detail?: Record<string, string | string[]> | string;
-      };
-      const payload = data.detail ?? data;
-
-      if (typeof payload === "string") {
-        message = payload;
-      } else {
-        const firstEntry = Object.values(payload)[0];
-        message = Array.isArray(firstEntry) ? firstEntry[0] : String(firstEntry);
-      }
-    } catch {
-      message = "Request failed.";
-    }
-
-    throw new Error(message);
+    throw new Error(await readErrorMessage(response));
   }
 
   return response.json() as Promise<T>;
@@ -124,25 +153,7 @@ async function apiFormFetch<T>(path: string, body: FormData, method = "POST", he
   });
 
   if (!response.ok) {
-    let message = "Request failed.";
-
-    try {
-      const data = await response.json();
-      if (typeof data.detail === "string") {
-        message = data.detail;
-      } else if (typeof data === "object" && data) {
-        const firstEntry = Object.values(data)[0];
-        if (Array.isArray(firstEntry)) {
-          message = String(firstEntry[0]);
-        } else if (typeof firstEntry === "string") {
-          message = firstEntry;
-        }
-      }
-    } catch {
-      message = "Request failed.";
-    }
-
-    throw new Error(message);
+    throw new Error(await readErrorMessage(response));
   }
 
   return response.json() as Promise<T>;

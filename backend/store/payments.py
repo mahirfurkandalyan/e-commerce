@@ -1,10 +1,13 @@
 import json
+import logging
 from decimal import Decimal
 
 import iyzipay
 from django.conf import settings
 from django.urls import reverse
 from iyzipay.iyzipay_resource import IyzipayResource
+
+logger = logging.getLogger(__name__)
 
 
 class IyzicoConfigurationError(Exception):
@@ -26,14 +29,25 @@ def _format_amount(value):
 
 def _read_iyzico_response(response):
     payload = response.read().decode("utf-8")
+    logger.warning("Iyzico response body: %s", payload)
     if not payload:
         return {}
-    return json.loads(payload)
+    try:
+        return json.loads(payload)
+    except json.JSONDecodeError as exc:
+        raise IyzicoPaymentError(f"Iyzico response is not valid JSON: {payload}") from exc
 
 
 def _options():
-    if not settings.IYZICO_API_KEY or not settings.IYZICO_SECRET_KEY:
-        raise IyzicoConfigurationError("Iyzico sandbox credentials are not configured.")
+    missing = []
+    if not settings.IYZICO_API_KEY:
+        missing.append("IYZICO_API_KEY")
+    if not settings.IYZICO_SECRET_KEY:
+        missing.append("IYZICO_SECRET_KEY")
+    if not settings.IYZICO_BASE_URL:
+        missing.append("IYZICO_BASE_URL")
+    if missing:
+        raise IyzicoConfigurationError(f"Missing Iyzico environment variables: {', '.join(missing)}")
 
     return {
         "api_key": settings.IYZICO_API_KEY,
@@ -98,11 +112,25 @@ def create_checkout_session(request, order):
         "basketItems": basket_items,
     }
 
-    data = _read_iyzico_response(CheckoutFormInitialize().create(checkout_request, _options()))
+    logger.warning("Iyzico checkout initialize request for order %s: %s", order.id, json.dumps(checkout_request, ensure_ascii=False))
+    logger.warning("Iyzico callback URL for order %s: %s", order.id, callback_url)
+
+    try:
+        data = _read_iyzico_response(CheckoutFormInitialize().create(checkout_request, _options()))
+    except IyzicoConfigurationError:
+        raise
+    except IyzicoPaymentError:
+        raise
+    except Exception as exc:
+        raise IyzicoPaymentError(f"Iyzico checkout initialize request failed: {exc}") from exc
+
+    logger.warning("Iyzico checkout initialize parsed response for order %s: %s", order.id, json.dumps(data, ensure_ascii=False))
+
     if data.get("status") != "success":
-        raise IyzicoPaymentError(data.get("errorMessage") or "Iyzico checkout session could not be created.")
+        error_message = data.get("errorMessage") or data.get("errorCode") or "Iyzico checkout session could not be created."
+        raise IyzicoPaymentError(f"Iyzico checkout initialize failed: {error_message}")
     if not data.get("token") or not data.get("paymentPageUrl"):
-        raise IyzicoPaymentError("Iyzico checkout session did not include a payment URL.")
+        raise IyzicoPaymentError(f"Iyzico checkout session did not include token/paymentPageUrl. Response: {data}")
 
     return {
         "conversation_id": conversation_id,
@@ -117,4 +145,16 @@ def retrieve_checkout_result(token, conversation_id):
         "conversationId": conversation_id,
         "token": token,
     }
-    return _read_iyzico_response(iyzipay.CheckoutForm().retrieve(result_request, _options()))
+    logger.warning("Iyzico checkout retrieve request: %s", json.dumps(result_request, ensure_ascii=False))
+
+    try:
+        data = _read_iyzico_response(iyzipay.CheckoutForm().retrieve(result_request, _options()))
+    except IyzicoConfigurationError:
+        raise
+    except IyzicoPaymentError:
+        raise
+    except Exception as exc:
+        raise IyzicoPaymentError(f"Iyzico checkout retrieve request failed: {exc}") from exc
+
+    logger.warning("Iyzico checkout retrieve parsed response: %s", json.dumps(data, ensure_ascii=False))
+    return data

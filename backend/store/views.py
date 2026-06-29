@@ -1,3 +1,4 @@
+import logging
 from decimal import Decimal
 
 from django.conf import settings
@@ -39,6 +40,8 @@ from store.serializers import (
     StoreSerializer,
     StoreStatsSerializer,
 )
+
+logger = logging.getLogger(__name__)
 
 PUBLIC_CACHE_TTL = 60 * 5
 
@@ -306,6 +309,7 @@ class OrderCreateAPIView(APIView):
 
     @transaction.atomic
     def post(self, request):
+        logger.warning("Order create request body: %s", request.data)
         serializer = OrderCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -356,6 +360,7 @@ class OrderCreateAPIView(APIView):
 
         response_data = OrderSerializer(order).data
         response_data.update(self._build_payment_response(order))
+        logger.warning("Order create response body for order %s: %s", order.id, response_data)
         return Response(response_data, status=status.HTTP_201_CREATED)
 
     def _build_whatsapp_message(self, order):
@@ -387,11 +392,19 @@ class OrderCreateAPIView(APIView):
             try:
                 session = create_checkout_session(self.request, order)
             except (IyzicoConfigurationError, IyzicoPaymentError) as exc:
+                logger.exception("Iyzico payment setup failed for order %s: %s", order.id, exc)
                 order.payment_status = PaymentStatus.FAILED
                 order.payment_provider = "iyzico"
                 order.payment_error = str(exc)
                 order.save(update_fields=["payment_status", "payment_provider", "payment_error"])
                 raise serializers.ValidationError({"payment": str(exc)})
+            except Exception as exc:
+                logger.exception("Unexpected card payment setup error for order %s: %s", order.id, exc)
+                order.payment_status = PaymentStatus.FAILED
+                order.payment_provider = "iyzico"
+                order.payment_error = str(exc)
+                order.save(update_fields=["payment_status", "payment_provider", "payment_error"])
+                raise serializers.ValidationError({"payment": f"Unexpected card payment setup error: {exc}"})
 
             order.payment_provider = "iyzico"
             order.payment_token = session["token"]
@@ -441,6 +454,7 @@ class IyzicoCallbackAPIView(APIView):
     permission_classes = []
 
     def post(self, request):
+        logger.warning("Iyzico callback request body: %s", request.data or request.POST)
         token = (request.data.get("token") or request.POST.get("token") or "").strip()
         if not token:
             return redirect(f"{settings.FRONTEND_BASE_URL}/payment-result?status=failed&reason=missing-token")
@@ -453,11 +467,19 @@ class IyzicoCallbackAPIView(APIView):
         try:
             data = retrieve_checkout_result(token, order.payment_conversation_id)
         except (IyzicoConfigurationError, IyzicoPaymentError, ValueError) as exc:
+            logger.exception("Iyzico callback retrieve failed for order %s: %s", order.id, exc)
+            order.payment_status = PaymentStatus.FAILED
+            order.payment_error = str(exc)
+            order.save(update_fields=["payment_status", "payment_error"])
+            return redirect(f"{settings.FRONTEND_BASE_URL}/payment-result?status=failed&order={order.id}")
+        except Exception as exc:
+            logger.exception("Unexpected iyzico callback error for order %s: %s", order.id, exc)
             order.payment_status = PaymentStatus.FAILED
             order.payment_error = str(exc)
             order.save(update_fields=["payment_status", "payment_error"])
             return redirect(f"{settings.FRONTEND_BASE_URL}/payment-result?status=failed&order={order.id}")
 
+        logger.warning("Iyzico callback parsed response for order %s: %s", order.id, data)
         if data.get("status") == "success" and data.get("paymentStatus") == "SUCCESS":
             order.is_paid = True
             order.payment_status = PaymentStatus.PAID
