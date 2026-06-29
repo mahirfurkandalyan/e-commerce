@@ -80,7 +80,7 @@ export default async function Home({ searchParams }: HomePageProps) {
       description="Netlik, hız ve zarif bir alışveriş deneyimine önem veren butik markalar için tasarlandı."
       heroTone="feature"
     >
-      <section className="space-y-8">
+      <section className="space-y-6 sm:space-y-8">
         <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
           <SearchForm defaultValue={search} activeCategory={category} activeSort={sort} />
           <StoreStatsPanel stats={stats} />
@@ -91,7 +91,7 @@ export default async function Home({ searchParams }: HomePageProps) {
         <div className="flex items-end justify-between gap-4">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#888888]">Öne Çıkan Ürünler</p>
-            <h2 className="editorial-title mt-2 text-4xl leading-none text-[#111111] sm:text-5xl">
+            <h2 className="editorial-title mt-2 text-3xl leading-none text-[#111111] sm:text-5xl">
               Günlük yaşam için özenle seçildi.
             </h2>
           </div>
@@ -101,13 +101,13 @@ export default async function Home({ searchParams }: HomePageProps) {
         </div>
 
         {sorted.length > 0 ? (
-          <div className="product-grid grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="product-grid grid gap-4 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3">
             {sorted.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
         ) : (
-          <div className="soft-panel rounded-[2rem] p-10 text-center">
+          <div className="soft-panel rounded-[1.5rem] p-6 text-center sm:rounded-[2rem] sm:p-10">
             <h2 className="editorial-title text-3xl text-[#111111]">Ürün bulunamadı.</h2>
             <p className="mt-3 text-sm leading-6 text-[#666666]">
               Aramayı değiştirin, başka kategori seçin ya da Django yönetiminden ürün ekleyin.
@@ -115,8 +115,8 @@ export default async function Home({ searchParams }: HomePageProps) {
           </div>
         )}
 
-        <div className="mt-6 overflow-hidden rounded-[2rem] border border-black/6 bg-[linear-gradient(145deg,#fdfbf8_0%,#f4ece3_100%)] p-8 sm:p-10">
-          <div className="mb-8 text-center">
+        <div className="mt-6 overflow-hidden rounded-[1.5rem] border border-black/6 bg-[linear-gradient(145deg,#fdfbf8_0%,#f4ece3_100%)] p-5 sm:rounded-[2rem] sm:p-10">
+          <div className="mb-6 text-center sm:mb-8">
             <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-[#7c6d5b]">Neden Bizi Tercih Ediyorlar</p>
             <h2 className="editorial-title mt-3 text-3xl text-[#111111] sm:text-4xl">
               Gürültü değil, güven odaklı.
@@ -129,7 +129,7 @@ export default async function Home({ searchParams }: HomePageProps) {
             {WHY_ITEMS.map((item, index) => (
               <div
                 key={index}
-                className="animate-reveal-scale rounded-[1.5rem] border border-black/6 bg-white/80 p-6 shadow-[0_12px_40px_-28px_rgba(17,17,17,0.12),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-sm"
+                className="animate-reveal-scale rounded-[1.25rem] border border-black/6 bg-white/80 p-5 shadow-[0_12px_40px_-28px_rgba(17,17,17,0.12),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-sm sm:rounded-[1.5rem] sm:p-6"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <span className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[linear-gradient(145deg,rgba(234,219,200,0.6),rgba(220,196,170,0.35))] text-[#8b6544]">

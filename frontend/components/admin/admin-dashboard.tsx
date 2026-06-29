@@ -366,9 +366,9 @@ export function AdminDashboard() {
   }
 
   return (
-    <main className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
-      <div className="app-frame mx-auto flex w-full max-w-[1480px] flex-col gap-6 overflow-hidden rounded-[2rem] border border-black/5 p-4 sm:p-6 lg:p-8">
-        <section className="relative overflow-hidden rounded-[2rem] border border-black/6 bg-[linear-gradient(145deg,#ffffff_0%,#fdf9f5_42%,#f0e6da_100%)] p-6 sm:p-8 lg:p-10">
+    <main className="px-2 py-2 sm:px-6 sm:py-6 lg:px-8">
+      <div className="app-frame mx-auto flex w-full max-w-[1480px] flex-col gap-5 overflow-hidden rounded-[1.25rem] border border-black/5 p-3 sm:gap-6 sm:rounded-[2rem] sm:p-6 lg:p-8">
+        <section className="relative overflow-hidden rounded-[1.35rem] border border-black/6 bg-[linear-gradient(145deg,#ffffff_0%,#fdf9f5_42%,#f0e6da_100%)] p-4 sm:rounded-[2rem] sm:p-8 lg:p-10">
           <div className="grid-accent pointer-events-none absolute inset-0 opacity-[0.35]" />
           <div className="relative grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
             <div className="space-y-5">
@@ -378,7 +378,7 @@ export function AdminDashboard() {
                 Operasyon Merkezi
               </span>
               <div className="space-y-3">
-                <h1 className="editorial-title max-w-4xl text-5xl leading-[0.92] text-[#2c2119] sm:text-6xl lg:text-[4.75rem]">
+                <h1 className="editorial-title max-w-4xl text-4xl leading-[0.96] text-[#2c2119] sm:text-6xl lg:text-[4.75rem]">
                   Mağazayı aynı premium dilde yönetin.
                 </h1>
                 <p className="max-w-2xl text-base leading-8 text-[#5f5650] sm:text-lg">
@@ -416,14 +416,14 @@ export function AdminDashboard() {
         </section>
 
         <section className="grid gap-6 xl:grid-cols-[0.92fr_1.08fr]">
-          <form onSubmit={handleCreateProduct} className="soft-panel rounded-[1.75rem] p-6 sm:p-7">
+          <form onSubmit={handleCreateProduct} className="soft-panel rounded-[1.35rem] p-4 sm:rounded-[1.75rem] sm:p-7">
             <div className="space-y-6">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#8f8379]">Yeni ürün</p>
-                  <h2 className="editorial-title mt-2 text-4xl leading-none text-[#1f1711]">Koleksiyona yeni parça ekle</h2>
+                  <h2 className="editorial-title mt-2 text-3xl leading-none text-[#1f1711] sm:text-4xl">Koleksiyona yeni parça ekle</h2>
                 </div>
-                <Link href="/" className="rounded-full border border-black/8 bg-white/80 px-4 py-2 text-sm text-[#2c2119] shadow-[0_10px_26px_-20px_rgba(17,17,17,0.3)] hover:-translate-y-0.5 hover:border-[#dcc4aa]/70">
+              <Link href="/" className="shrink-0 rounded-full border border-black/8 bg-white/80 px-4 py-2 text-sm text-[#2c2119] shadow-[0_10px_26px_-20px_rgba(17,17,17,0.3)] hover:-translate-y-0.5 hover:border-[#dcc4aa]/70">
                   Vitrine dön
                 </Link>
               </div>
@@ -490,11 +490,11 @@ export function AdminDashboard() {
         </section>
 
         <section className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-          <div className="soft-panel rounded-[1.75rem] p-6">
+          <div className="soft-panel rounded-[1.35rem] p-4 sm:rounded-[1.75rem] sm:p-6">
             <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#8f8379]">Ürün yönetimi</p>
-                <h2 className="editorial-title mt-2 text-4xl leading-none text-[#1f1711]">Stok, fiyat ve yayın durumu</h2>
+                <h2 className="editorial-title mt-2 text-3xl leading-none text-[#1f1711] sm:text-4xl">Stok, fiyat ve yayın durumu</h2>
               </div>
               <input value={productQuery} onChange={(event) => setProductQuery(event.target.value)} className="w-full rounded-full border border-black/8 bg-white px-4 py-3 text-sm text-[#111111] sm:max-w-[280px]" placeholder="Ürün ara" />
             </div>
@@ -580,11 +580,11 @@ export function AdminDashboard() {
             </div>
           </div>
 
-          <div className="soft-panel rounded-[1.75rem] p-6">
+          <div className="soft-panel rounded-[1.35rem] p-4 sm:rounded-[1.75rem] sm:p-6">
             <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#8f8379]">Sipariş yönetimi</p>
-                <h2 className="editorial-title mt-2 text-4xl leading-none text-[#1f1711]">Durum akışını buradan yönetin</h2>
+                <h2 className="editorial-title mt-2 text-3xl leading-none text-[#1f1711] sm:text-4xl">Durum akışını buradan yönetin</h2>
               </div>
               <select value={orderFilter} onChange={(event) => setOrderFilter(event.target.value)} className="rounded-full border border-black/8 bg-white px-4 py-3 text-sm text-[#111111] sm:min-w-[200px]">
                 <option value="all">Tüm siparişler</option>

@@ -51,14 +51,14 @@ export async function SiteShell({
   const isFeatureHero = heroTone === "feature";
 
   return (
-    <main className="flex min-h-screen flex-1 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
+    <main className="flex min-h-screen flex-1 px-2 py-2 pb-24 sm:px-6 sm:py-6 sm:pb-6 lg:px-8">
       <div
-        className="app-frame mx-auto flex w-full max-w-[1440px] flex-col overflow-hidden rounded-[2rem] border border-black/5 p-4 sm:p-6 lg:p-8"
+        className="app-frame mx-auto flex w-full max-w-[1440px] flex-col overflow-hidden rounded-[1.25rem] border border-black/5 p-3 sm:rounded-[2rem] sm:p-6 lg:p-8"
         style={{ "--brand-color": brandColor } as CSSProperties}
       >
-        <header className="sticky top-4 z-30 mb-8 rounded-[1.25rem] border border-white/65 bg-white/88 px-4 py-3 shadow-[0_22px_60px_-40px_rgba(17,17,17,0.18),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-2xl sm:px-5">
-          <div className="flex items-center justify-between gap-4">
-            <Link href="/" className="flex min-w-0 items-center gap-4">
+        <header className="sticky top-2 z-30 mb-5 rounded-[1rem] border border-white/65 bg-white/92 px-3 py-3 shadow-[0_22px_60px_-40px_rgba(17,17,17,0.18),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-2xl sm:top-4 sm:mb-8 sm:rounded-[1.25rem] sm:px-5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <Link href="/" className="flex min-w-0 items-center gap-3 sm:gap-4">
               {store?.logo ? (
                 <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-black/8 bg-white shadow-[0_10px_24px_-16px_rgba(17,17,17,0.22)]">
                   <Image src={store.logo} alt={storeName} fill sizes="44px" className="object-cover" />
@@ -71,18 +71,18 @@ export async function SiteShell({
                   {storeName.charAt(0).toUpperCase()}
                 </div>
               )}
-              <div className="min-w-0">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: brandColor }}>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-[11px] font-semibold uppercase tracking-[0.18em] sm:tracking-[0.3em]" style={{ color: brandColor }}>
                   {storeName}
                 </p>
-                <p className="truncate text-sm text-[#888888]">{storeDescription}</p>
+                <p className="truncate text-xs text-[#888888] sm:text-sm">{storeDescription}</p>
               </div>
             </Link>
 
-            <nav className="hidden items-center gap-3 sm:flex">
+            <nav className="flex w-full items-center gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:w-auto sm:gap-3 sm:overflow-visible sm:pb-0">
               <Link
                 href="/"
-                className="rounded-full border border-black/8 bg-white/80 px-4 py-2 text-sm text-[#111111] shadow-[0_2px_8px_-4px_rgba(17,17,17,0.1)] transition hover:-translate-y-0.5 hover:border-[#dcc4aa]/60 hover:bg-white hover:shadow-[0_6px_18px_-6px_rgba(17,17,17,0.14)]"
+                className="shrink-0 rounded-full border border-black/8 bg-white/80 px-3.5 py-2 text-sm text-[#111111] shadow-[0_2px_8px_-4px_rgba(17,17,17,0.1)] transition hover:-translate-y-0.5 hover:border-[#dcc4aa]/60 hover:bg-white hover:shadow-[0_6px_18px_-6px_rgba(17,17,17,0.14)] sm:px-4"
               >
                 Mağaza
               </Link>
@@ -95,8 +95,8 @@ export async function SiteShell({
         <section
           className={`relative overflow-hidden rounded-[2rem] border border-black/6 ${
             isFeatureHero
-              ? "mb-10 bg-[linear-gradient(145deg,#ffffff_0%,#fdf9f5_42%,#f0e6da_100%)] p-6 sm:p-8 lg:p-12"
-              : "mb-8 bg-[linear-gradient(145deg,#ffffff_0%,#faf7f3_100%)] p-6 sm:p-8"
+              ? "mb-7 bg-[linear-gradient(145deg,#ffffff_0%,#fdf9f5_42%,#f0e6da_100%)] p-4 sm:mb-10 sm:p-8 lg:p-12"
+              : "mb-6 bg-[linear-gradient(145deg,#ffffff_0%,#faf7f3_100%)] p-4 sm:mb-8 sm:p-8"
           }`}
         >
           {/* Grid accent */}
@@ -130,7 +130,7 @@ export async function SiteShell({
                 {eyebrow}
               </span>
 
-              <h1 className={`animate-reveal-up delay-100 editorial-title gradient-text ${isFeatureHero ? "max-w-5xl text-5xl leading-[0.9] sm:text-6xl lg:text-[5rem]" : "text-4xl leading-[0.95] sm:text-5xl"}`}>
+              <h1 className={`animate-reveal-up delay-100 editorial-title gradient-text ${isFeatureHero ? "max-w-5xl text-4xl leading-[0.95] sm:text-6xl lg:text-[5rem]" : "text-3xl leading-[0.98] sm:text-5xl"}`}>
                 {title}
               </h1>
 
@@ -180,7 +180,7 @@ export async function SiteShell({
             </div>
 
             {/* ── Right: bento grid (hiç absolute yok, üst üste binme imkansız) ── */}
-            <div className={isFeatureHero ? "" : "hidden lg:block"}>
+            <div className={isFeatureHero ? "hidden md:block" : "hidden lg:block"}>
               <div className="grid h-[400px] grid-cols-[1fr_1.45fr] grid-rows-2 gap-3 lg:h-[440px]">
 
                 {/* Sol üst — sipariş sayacı */}

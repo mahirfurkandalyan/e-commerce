@@ -16,8 +16,8 @@ export function CartView() {
 
   if (items.length === 0) {
     return (
-      <section className="soft-panel rounded-[2rem] p-10 text-center">
-        <h2 className="editorial-title text-4xl text-[#111111]">Sepetiniz boş.</h2>
+      <section className="soft-panel rounded-[1.5rem] p-6 text-center sm:rounded-[2rem] sm:p-10">
+        <h2 className="editorial-title text-3xl text-[#111111] sm:text-4xl">Sepetiniz boş.</h2>
         <p className="mt-4 text-sm leading-7 text-[#666666]">
           Ödeme adımına geçmek için birkaç ürün ekleyin.
         </p>
@@ -36,8 +36,8 @@ export function CartView() {
             key={item.id}
             className="rounded-[1.2rem] border border-black/6 bg-white p-4 shadow-[0_24px_60px_-42px_rgba(17,17,17,0.12)] sm:p-5"
           >
-            <div className="flex gap-4">
-              <div className="relative h-28 w-24 shrink-0 overflow-hidden rounded-[1rem] bg-[#f5f5f5] sm:h-32 sm:w-28">
+            <div className="flex flex-col gap-4 min-[420px]:flex-row">
+              <div className="relative aspect-[4/3.2] w-full shrink-0 overflow-hidden rounded-[1rem] bg-[#f5f5f5] min-[420px]:h-28 min-[420px]:w-24 sm:h-32 sm:w-28">
                 {item.image ? (
                   <Image src={item.image} alt={item.name} fill sizes="112px" className="object-cover" />
                 ) : (
@@ -49,7 +49,7 @@ export function CartView() {
 
               <div className="flex min-w-0 flex-1 flex-col justify-between gap-4">
                 <div className="space-y-2">
-                  <Link href={`/products/${item.slug}`} className="editorial-title block text-3xl leading-[1.02] text-[#111111]">
+                  <Link href={`/products/${item.slug}`} className="editorial-title block text-2xl leading-[1.05] text-[#111111] sm:text-3xl">
                     {item.name}
                   </Link>
                   <p className="text-sm text-[#888888]">{formatCurrency(item.price)} / adet</p>
@@ -81,9 +81,9 @@ export function CartView() {
         ))}
       </div>
 
-      <aside className="dark-panel h-fit rounded-[1.6rem] border border-black/10 p-6 text-white shadow-[0_30px_70px_-36px_rgba(17,17,17,0.34)]">
+      <aside className="dark-panel h-fit rounded-[1.35rem] border border-black/10 p-5 text-white shadow-[0_30px_70px_-36px_rgba(17,17,17,0.34)] sm:rounded-[1.6rem] sm:p-6">
         <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-white/50">Sipariş Özeti</p>
-        <h3 className="editorial-title mt-4 text-4xl text-white">Son kontrol.</h3>
+        <h3 className="editorial-title mt-4 text-3xl text-white sm:text-4xl">Son kontrol.</h3>
         <div className="mt-8 space-y-4">
           <div className="flex items-center justify-between text-sm text-white/72">
             <span>Ürün</span>

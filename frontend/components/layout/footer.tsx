@@ -24,7 +24,7 @@ export function Footer({ storeName, brandColor, logo, description }: FooterProps
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative mt-12 overflow-hidden rounded-[2rem] border border-black/6 bg-[linear-gradient(160deg,#111111_0%,#1a1612_55%,#0e0d0b_100%)] text-white">
+    <footer className="relative mt-8 overflow-hidden rounded-[1.35rem] border border-black/6 bg-[linear-gradient(160deg,#111111_0%,#1a1612_55%,#0e0d0b_100%)] text-white sm:mt-12 sm:rounded-[2rem]">
       <div
         className="orb-float-1 pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full opacity-25"
         style={{ background: "radial-gradient(circle, rgba(220,196,170,0.9), transparent 65%)" }}
@@ -34,7 +34,7 @@ export function Footer({ storeName, brandColor, logo, description }: FooterProps
         style={{ background: "radial-gradient(circle, rgba(234,219,200,0.8), transparent 68%)" }}
       />
 
-      <div className="relative grid gap-10 p-8 sm:p-10 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] lg:gap-12">
+      <div className="relative grid gap-8 p-5 sm:gap-10 sm:p-10 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] lg:gap-12">
         <div className="space-y-5">
           <div className="flex items-center gap-3">
             {logo ? (
@@ -126,7 +126,7 @@ export function Footer({ storeName, brandColor, logo, description }: FooterProps
         </div>
       </div>
 
-      <div className="relative border-t border-white/8 px-8 py-5 sm:px-10">
+      <div className="relative border-t border-white/8 px-5 py-5 sm:px-10">
         <div className="flex flex-col items-center justify-between gap-3 text-xs text-white/30 sm:flex-row">
           <p>&copy; {year} {storeName}. Tüm hakları saklıdır.</p>
           <p>Micro Commerce ile güçlendirilmiştir · Next.js + Django</p>

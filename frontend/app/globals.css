@@ -522,3 +522,34 @@ button, a, input, textarea {
 .group:hover .quick-view-btn {
   transform: translateY(0);
 }
+
+@media (max-width: 640px) {
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .editorial-title {
+    letter-spacing: -0.015em;
+    overflow-wrap: anywhere;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+  }
+
+  .product-grid > * {
+    animation-delay: 0ms;
+  }
+
+  .wishlist-btn,
+  .quick-view-overlay {
+    opacity: 1;
+    transform: none;
+  }
+}

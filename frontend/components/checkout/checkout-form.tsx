@@ -110,8 +110,8 @@ export function CheckoutForm() {
 
   if (items.length === 0) {
     return (
-      <section className="soft-panel rounded-[2rem] p-10 text-center">
-        <h2 className="editorial-title text-4xl text-[#111111]">Ödeme için önce ürün seçmelisiniz.</h2>
+      <section className="soft-panel rounded-[1.5rem] p-6 text-center sm:rounded-[2rem] sm:p-10">
+        <h2 className="editorial-title text-3xl text-[#111111] sm:text-4xl">Ödeme için önce ürün seçmelisiniz.</h2>
         <p className="mt-4 text-sm text-[#666666]">Sipariş oluşturmadan önce kataloğa dönüp ürün ekleyin.</p>
       </section>
     );
@@ -119,11 +119,11 @@ export function CheckoutForm() {
 
   return (
     <section className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-      <form onSubmit={handleSubmit} className="soft-panel rounded-[1.6rem] p-6 sm:p-8">
-        <div className="space-y-8">
+      <form onSubmit={handleSubmit} className="soft-panel rounded-[1.35rem] p-4 sm:rounded-[1.6rem] sm:p-8">
+        <div className="space-y-6 sm:space-y-8">
           <div className="space-y-3">
             <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#888888]">Ödeme</p>
-            <h2 className="editorial-title text-5xl leading-[0.95] text-[#111111]">Sakin ve net son adım.</h2>
+            <h2 className="editorial-title text-3xl leading-[1] text-[#111111] sm:text-5xl sm:leading-[0.95]">Sakin ve net son adım.</h2>
             <p className="max-w-xl text-sm leading-7 text-[#666666]">
               Teslimat bilgilerini girin, ödeme yöntemini seçin ve siparişinizi zahmetsizce tamamlayın.
             </p>
@@ -167,7 +167,7 @@ export function CheckoutForm() {
 
           <fieldset className="space-y-3">
             <legend className="text-sm font-medium text-[#333333]">Ödeme yöntemi</legend>
-            <div className="grid gap-3 sm:grid-cols-3">
+            <div className="grid gap-3 min-[520px]:grid-cols-3">
               {[
                 { value: "whatsapp", label: "WhatsApp", description: "Sohbette onaylayın." },
                 { value: "card", label: "Kart", description: "Iyzico test karti." },
@@ -211,9 +211,9 @@ export function CheckoutForm() {
         </div>
       </form>
 
-      <aside className="dark-panel rounded-[1.6rem] border border-black/10 p-6 text-white shadow-[0_30px_70px_-36px_rgba(17,17,17,0.34)]">
+      <aside className="dark-panel rounded-[1.35rem] border border-black/10 p-5 text-white shadow-[0_30px_70px_-36px_rgba(17,17,17,0.34)] sm:rounded-[1.6rem] sm:p-6">
         <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-white/50">Sipariş Kontrolü</p>
-        <h3 className="editorial-title mt-4 text-4xl text-white">Son düzen.</h3>
+        <h3 className="editorial-title mt-4 text-3xl text-white sm:text-4xl">Son düzen.</h3>
         <div className="mt-8 space-y-4">
           {items.map((item) => (
             <div key={item.id} className="flex items-start justify-between gap-4 text-sm">

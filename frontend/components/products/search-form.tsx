@@ -15,7 +15,7 @@ const SORT_OPTIONS = [
 
 export function SearchForm({ defaultValue, activeCategory, activeSort }: SearchFormProps) {
   return (
-    <div className="relative overflow-hidden rounded-[1.75rem] border border-black/6 bg-white/92 p-5 shadow-[0_22px_60px_-42px_rgba(17,17,17,0.14),inset_0_1px_0_rgba(255,255,255,0.95)] backdrop-blur-sm sm:p-6">
+    <div className="relative overflow-hidden rounded-[1.25rem] border border-black/6 bg-white/92 p-4 shadow-[0_22px_60px_-42px_rgba(17,17,17,0.14),inset_0_1px_0_rgba(255,255,255,0.95)] backdrop-blur-sm sm:rounded-[1.75rem] sm:p-6">
       <div
         className="orb-float-3 pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full opacity-45"
         style={{ background: "radial-gradient(circle, rgba(234,219,200,0.7), transparent 70%)" }}
@@ -25,8 +25,8 @@ export function SearchForm({ defaultValue, activeCategory, activeSort }: SearchF
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
           <div className="flex-1">
             <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-[0.26em] text-[#aaaaaa]">Katalogda Ara</p>
-            <h3 className="editorial-title mb-4 text-3xl leading-none text-[#111111]">Doğru parçayı hızla bulun.</h3>
-            <form method="GET" action="/" className="flex gap-2">
+            <h3 className="editorial-title mb-4 text-2xl leading-none text-[#111111] sm:text-3xl">Doğru parçayı hızla bulun.</h3>
+            <form method="GET" action="/" className="flex flex-col gap-2 min-[420px]:flex-row">
               {activeCategory ? <input type="hidden" name="category" value={activeCategory} /> : null}
               {activeSort ? <input type="hidden" name="sort" value={activeSort} /> : null}
               <div className="relative flex-1">
@@ -56,7 +56,7 @@ export function SearchForm({ defaultValue, activeCategory, activeSort }: SearchF
           </div>
         </div>
 
-        <div className="flex items-center gap-2 border-t border-black/5 pt-4">
+        <div className="flex flex-col gap-2 border-t border-black/5 pt-4 min-[420px]:flex-row min-[420px]:items-center">
           <span className="shrink-0 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#aaaaaa]">Sırala</span>
           <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {SORT_OPTIONS.map((option) => {

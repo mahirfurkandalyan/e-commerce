@@ -142,7 +142,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
           <Link
             href={`/products/${product.slug}`}
-            className="editorial-title block text-[1.7rem] leading-[1.06] text-[#111111] transition hover:text-[#3d2d1e]"
+            className="editorial-title block text-[1.45rem] leading-[1.08] text-[#111111] transition hover:text-[#3d2d1e] sm:text-[1.7rem]"
           >
             {product.name}
           </Link>
@@ -152,8 +152,8 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Footer row */}
-        <div className="flex items-center justify-between gap-3 border-t border-black/5 pt-4">
-          <div className="flex items-center gap-1.5">
+        <div className="flex flex-col gap-3 border-t border-black/5 pt-4 min-[420px]:flex-row min-[420px]:items-center min-[420px]:justify-between">
+          <div className="flex min-w-0 items-center gap-1.5">
             {isLowStock ? (
               <span className="rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-semibold text-amber-600 ring-1 ring-amber-200">
                 Son {product.stock} ürün!
@@ -161,13 +161,15 @@ export function ProductCard({ product }: ProductCardProps) {
             ) : !isOutOfStock ? (
               <>
                 <span className="dot-ping inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 text-emerald-400" />
-                <span className="text-[13px] text-[#888888]">{product.stock} adet sevke hazır</span>
+                <span className="truncate text-[13px] text-[#888888]">{product.stock} adet sevke hazır</span>
               </>
             ) : (
               <span className="text-[13px] text-[#aaaaaa]">Şu anda stokta yok</span>
             )}
           </div>
-          <AddToCartButton product={product} disabled={isOutOfStock} />
+          <div className="w-full min-[420px]:w-auto">
+            <AddToCartButton product={product} disabled={isOutOfStock} />
+          </div>
         </div>
       </div>
     </article>

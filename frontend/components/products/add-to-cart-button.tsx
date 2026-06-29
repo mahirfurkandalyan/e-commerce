@@ -37,7 +37,7 @@ export function AddToCartButton({ product, disabled = false }: AddToCartButtonPr
 
   if (disabled) {
     return (
-      <span className="rounded-full border border-black/8 bg-[#f5f5f5] px-5 py-2.5 text-sm font-medium text-[#bbbbbb] cursor-not-allowed select-none">
+      <span className="inline-flex w-full justify-center rounded-full border border-black/8 bg-[#f5f5f5] px-5 py-2.5 text-sm font-medium text-[#bbbbbb] cursor-not-allowed select-none min-[420px]:w-auto">
         Tükendi
       </span>
     );
@@ -47,13 +47,13 @@ export function AddToCartButton({ product, disabled = false }: AddToCartButtonPr
     <button
       type="button"
       onClick={handleAddToCart}
-      className={`relative overflow-hidden rounded-full px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 ${
+      className={`relative w-full overflow-hidden rounded-full px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 min-[420px]:w-auto ${
         added
           ? "bg-emerald-500 shadow-[0_6px_20px_-6px_rgba(16,185,129,0.5)]"
           : "bg-[linear-gradient(135deg,#1a1410_0%,#2e1f14_100%)] shadow-[0_6px_20px_-6px_rgba(17,17,17,0.45)] hover:-translate-y-0.5 hover:shadow-[0_10px_28px_-8px_rgba(17,17,17,0.5)]"
       }`}
     >
-      <span className={`flex items-center gap-1.5 transition-all duration-200 ${added ? "scale-95" : "scale-100"}`}>
+      <span className={`flex items-center justify-center gap-1.5 transition-all duration-200 ${added ? "scale-95" : "scale-100"}`}>
         {added ? (
           <>
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
