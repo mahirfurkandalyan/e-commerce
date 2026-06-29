@@ -1,13 +1,21 @@
+import base64
+import hashlib
+import hmac
+import http.client
 import json
 import logging
+import secrets
+import string
 from decimal import Decimal
+from urllib.parse import urlparse
 
-import iyzipay
 from django.conf import settings
 from django.urls import reverse
-from iyzipay.iyzipay_resource import IyzipayResource
 
 logger = logging.getLogger(__name__)
+
+CHECKOUT_INITIALIZE_PATH = "/payment/iyzipos/checkoutform/initialize/auth/ecom"
+CHECKOUT_RETRIEVE_PATH = "/payment/iyzipos/checkoutform/auth/ecom/detail"
 
 
 class IyzicoConfigurationError(Exception):
@@ -18,42 +26,99 @@ class IyzicoPaymentError(Exception):
     pass
 
 
-class CheckoutFormInitialize(IyzipayResource):
-    def create(self, request, options):
-        return self.connect("POST", "/payment/iyzipos/checkoutform/initialize/auth/ecom", options, request)
-
-
 def _format_amount(value):
     return f"{Decimal(value).quantize(Decimal('0.01'))}"
 
 
-def _read_iyzico_response(response):
-    payload = response.read().decode("utf-8")
-    logger.warning("Iyzico response body: %s", payload)
-    if not payload:
-        return {}
-    try:
-        return json.loads(payload)
-    except json.JSONDecodeError as exc:
-        raise IyzicoPaymentError(f"Iyzico response is not valid JSON: {payload}") from exc
+def _clean_env_value(value):
+    return (value or "").strip().strip('"').strip("'")
+
+
+def _clean_base_url(value):
+    base_url = _clean_env_value(value)
+    if base_url.startswith(("http://", "https://")):
+        parsed = urlparse(base_url)
+        base_url = parsed.netloc or parsed.path
+    return base_url.rstrip("/")
 
 
 def _options():
+    api_key = _clean_env_value(settings.IYZICO_API_KEY)
+    secret_key = _clean_env_value(settings.IYZICO_SECRET_KEY)
+    base_url = _clean_base_url(settings.IYZICO_BASE_URL)
+
     missing = []
-    if not settings.IYZICO_API_KEY:
+    if not api_key:
         missing.append("IYZICO_API_KEY")
-    if not settings.IYZICO_SECRET_KEY:
+    if not secret_key:
         missing.append("IYZICO_SECRET_KEY")
-    if not settings.IYZICO_BASE_URL:
+    if not base_url:
         missing.append("IYZICO_BASE_URL")
     if missing:
         raise IyzicoConfigurationError(f"Missing Iyzico environment variables: {', '.join(missing)}")
 
     return {
-        "api_key": settings.IYZICO_API_KEY,
-        "secret_key": settings.IYZICO_SECRET_KEY,
-        "base_url": settings.IYZICO_BASE_URL,
+        "api_key": api_key,
+        "secret_key": secret_key,
+        "base_url": base_url,
     }
+
+
+def _random_key(length=8):
+    alphabet = string.ascii_letters + string.digits
+    return "".join(secrets.choice(alphabet) for _ in range(length))
+
+
+def _authorization_header(options, path, random_key, body):
+    signature_payload = (random_key + path + body).encode("utf-8")
+    signature = hmac.new(options["secret_key"].encode("utf-8"), signature_payload, hashlib.sha256).hexdigest()
+    authorization_params = [
+        "apiKey:" + options["api_key"],
+        "randomKey:" + random_key,
+        "signature:" + signature,
+    ]
+    return "IYZWSv2 " + base64.b64encode("&".join(authorization_params).encode("utf-8")).decode("utf-8")
+
+
+def _post_iyzico(path, payload):
+    options = _options()
+    body = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+    random_key = _random_key()
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "x-iyzi-client-version": "custom-python-http",
+        "x-iyzi-rnd": random_key,
+        "Authorization": _authorization_header(options, path, random_key, body),
+    }
+
+    logger.warning("Iyzico POST %s on host %s", path, options["base_url"])
+    logger.warning("Iyzico request body: %s", body)
+
+    connection = http.client.HTTPSConnection(options["base_url"], timeout=30)
+    try:
+        connection.request("POST", path, body.encode("utf-8"), headers)
+        response = connection.getresponse()
+        raw_body = response.read().decode("utf-8")
+    finally:
+        connection.close()
+
+    logger.warning("Iyzico HTTP status: %s", response.status)
+    logger.warning("Iyzico response body: %s", raw_body)
+
+    if not raw_body:
+        raise IyzicoPaymentError(f"Iyzico returned empty response with status {response.status}.")
+
+    try:
+        data = json.loads(raw_body)
+    except json.JSONDecodeError as exc:
+        raise IyzicoPaymentError(f"Iyzico response is not valid JSON: {raw_body}") from exc
+
+    if response.status < 200 or response.status >= 300:
+        error_message = data.get("errorMessage") or data.get("errorCode") or raw_body
+        raise IyzicoPaymentError(f"Iyzico HTTP {response.status}: {error_message}")
+
+    return data
 
 
 def create_checkout_session(request, order):
@@ -116,7 +181,7 @@ def create_checkout_session(request, order):
     logger.warning("Iyzico callback URL for order %s: %s", order.id, callback_url)
 
     try:
-        data = _read_iyzico_response(CheckoutFormInitialize().create(checkout_request, _options()))
+        data = _post_iyzico(CHECKOUT_INITIALIZE_PATH, checkout_request)
     except IyzicoConfigurationError:
         raise
     except IyzicoPaymentError:
@@ -148,7 +213,7 @@ def retrieve_checkout_result(token, conversation_id):
     logger.warning("Iyzico checkout retrieve request: %s", json.dumps(result_request, ensure_ascii=False))
 
     try:
-        data = _read_iyzico_response(iyzipay.CheckoutForm().retrieve(result_request, _options()))
+        data = _post_iyzico(CHECKOUT_RETRIEVE_PATH, result_request)
     except IyzicoConfigurationError:
         raise
     except IyzicoPaymentError:
